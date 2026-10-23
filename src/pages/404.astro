@@ -1,0 +1,27 @@
+---
+import Site from '../layouts/site.astro';
+import Pixel from '../components/pixel.astro';
+import { reviewer } from '../components/sprites';
+
+const tag = 'font-pixel text-base tracking-[0.06em] uppercase';
+---
+
+<Site title="Level not found · Fábio Fiorita" description="This page does not exist. The portfolio does.">
+  <main class="mx-auto flex w-full max-w-[60rem] flex-1 flex-col justify-center px-5 py-24">
+    <p class:list={[tag, 'text-alarm']}>Error 404</p>
+    <h1 class="mt-4 font-display text-[clamp(1.8rem,6vw,3.5rem)] leading-[1.2] uppercase">Level<br />not found</h1>
+    <div class="mt-10 flex items-center gap-4" aria-hidden="true">
+      <Pixel {...reviewer} class="size-10" />
+      <div class="flex flex-1 gap-1">
+        {Array.from({ length: 12 }, (_, index) => <span class:list={['h-3 flex-1', index < 4 ? 'bg-porcelain' : 'bg-grid']} />)}
+      </div>
+    </div>
+    <p class="mt-8 max-w-[34rem] text-dim">The reviewer walked all the way here and found nothing to review. Whatever you were looking for is not on this page.</p>
+    <a
+      href="/"
+      class="mt-8 inline-flex w-fit items-center gap-2 border-2 border-text bg-text px-4 py-2 font-pixel text-lg tracking-[0.06em] text-night uppercase no-underline shadow-[4px_4px_0_0_var(--porcelain)] transition-transform active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0_0_var(--porcelain)]"
+    >
+      ◂ Back to start
+    </a>
+  </main>
+</Site>

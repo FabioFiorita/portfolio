@@ -10,6 +10,8 @@ interface Props {
 const { title, description } = Astro.props;
 /* Link previews in chat apps and social sites read these. They need absolute addresses. */
 const canonical = new URL(Astro.url.pathname, Astro.site);
+/* Section links jump in place on the home page and lead back to it from anywhere else. */
+const home = Astro.url.pathname === '/' ? '' : '/';
 const shareImage = new URL('/og.png', Astro.site);
 const sections = [
   ['projects', 'Projects'],
@@ -60,11 +62,11 @@ const sections = [
       class="sticky top-0 z-40 border-b border-transparent transition-colors duration-300 data-[scrolled]:border-grid data-[scrolled]:bg-night/90 data-[scrolled]:backdrop-blur"
     >
       <div class="mx-auto flex max-w-[60rem] items-center justify-between gap-4 px-5 py-4">
-        <a class="font-display text-[0.7rem] whitespace-nowrap text-text uppercase no-underline sm:text-xs" href="#top">Fábio Fiorita</a>
+        <a class="font-display text-[0.7rem] whitespace-nowrap text-text uppercase no-underline sm:text-xs" href={`${home}#top`}>Fábio Fiorita</a>
         <nav class="flex items-center gap-5 font-pixel text-lg tracking-[0.06em] text-dim uppercase" aria-label="Sections">
           {
             sections.map(([id, label], index) => (
-              <a class:list={['no-underline transition-colors hover:text-text', index < 3 && 'max-sm:hidden']} href={`#${id}`}>
+              <a class:list={['no-underline transition-colors hover:text-text', index < 3 && 'max-sm:hidden']} href={`${home}#${id}`}>
                 {label}
               </a>
             ))
@@ -79,7 +81,9 @@ const sections = [
     <footer class="border-t border-grid">
       <div class="mx-auto flex max-w-[60rem] flex-col gap-2 px-5 py-8 font-pixel text-lg tracking-[0.06em] text-dim uppercase sm:flex-row sm:justify-between">
         <span>© 2026 Fábio Fiorita</span>
-        <button type="button" data-secrets disabled class="inline-block w-fit border-2 border-grid px-2 text-alarm uppercase enabled:cursor-pointer enabled:hover:border-alarm">Secrets 0/5</button>
+        {home === '' && (
+          <button type="button" data-secrets disabled class="inline-block w-fit border-2 border-grid px-2 text-alarm uppercase enabled:cursor-pointer enabled:hover:border-alarm">Secrets 0/5</button>
+        )}
       </div>
     </footer>
 
