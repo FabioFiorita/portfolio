@@ -1,0 +1,34 @@
+---
+import Pixel from '../pixel.astro';
+import { check } from '../sprites';
+
+/* Tastik: the lemons count up on a stepper, then the list packs itself. */
+const items = ['Lemons', 'Passport', 'Charger', 'Sunscreen'] as const;
+const tag = 'font-pixel text-base tracking-[0.06em] uppercase';
+---
+
+<div data-scene="lists" class="flex h-full flex-col">
+  <div class="flex items-center justify-between border-b-2 border-grid px-3 py-2">
+    <span class:list={[tag, 'text-tastik']}>Trip packing</span>
+    <span class:list={[tag, 'text-dim']}><span data-done>0</span>/4</span>
+  </div>
+  <ul class="flex flex-1 flex-col gap-2.5 px-3 py-5">
+    {
+      items.map((item, index) => (
+        <li data-item class="flex h-5 items-center gap-2.5 font-pixel text-lg tracking-[0.06em] uppercase">
+          <span class="relative inline-flex size-4 shrink-0 items-center justify-center border-2 border-dim">
+            <Pixel {...check} class="absolute hidden size-3.5 data-[on]:block" />
+          </span>
+          <span data-label>{item}</span>
+          {index === 0 && (
+            <span class="ml-auto inline-flex items-center gap-1.5 text-dim">
+              <span class="text-xs">−</span>
+              <span data-count class="w-4 text-center text-text tabular-nums">1</span>
+              <span class="text-xs">+</span>
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</div>

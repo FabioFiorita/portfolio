@@ -1,0 +1,30 @@
+---
+import Pixel from '../pixel.astro';
+import { bell, pill } from '../sprites';
+
+/* ItsMedTime: the clock reaches eight, the alarm rings, the dose is taken and the streak grows. */
+const tag = 'font-pixel text-base tracking-[0.06em] uppercase';
+---
+
+<div data-scene="dose" class="flex h-full flex-col">
+  <div class="flex items-center justify-between border-b-2 border-grid px-3 py-2">
+    <span class:list={[tag, 'text-medtime']}>Today</span>
+    <span class:list={[tag, 'text-dim']}>Streak <span data-streak>4</span></span>
+  </div>
+  <div class="flex flex-1 flex-col items-center justify-center gap-4 px-3 py-5">
+    <div class="flex items-center gap-3">
+      <button type="button" data-bell data-secret="bell" class="size-7 cursor-pointer" aria-label="The alarm bell">
+        <Pixel {...bell} class="size-7" />
+      </button>
+      <span data-clock class="font-display text-2xl tabular-nums">07:58</span>
+    </div>
+    <div class="flex w-full items-center justify-between gap-2 border-2 border-grid px-2 py-1.5">
+      <Pixel {...pill} class="h-3 w-6 shrink-0" />
+      <span data-dose class="font-pixel text-base tracking-[0.06em] text-dim uppercase">Losartan · 8:00</span>
+      <span data-taken class="hidden font-pixel text-base tracking-[0.06em] text-tastik uppercase">Taken ✓</span>
+    </div>
+    <div class="flex w-full gap-1" aria-hidden="true">
+      {Array.from({ length: 7 }, (_, day) => <span data-day class:list={['h-2 flex-1', day < 4 ? 'bg-medtime' : 'bg-grid']} />)}
+    </div>
+  </div>
+</div>

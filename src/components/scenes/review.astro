@@ -1,0 +1,42 @@
+---
+import Pixel from '../pixel.astro';
+import { reviewer } from '../sprites';
+
+/* Porcelain: the reviewer steps down a diff and marks each line. */
+const diff = [0.7, -0.45, 0.55, 0.85, -0.3] as const;
+const tag = 'font-pixel text-base tracking-[0.06em] uppercase';
+---
+
+<div data-scene="review" class="flex h-full flex-col">
+  <div class="flex items-center justify-between border-b-2 border-grid px-3 py-2">
+    <span class:list={[tag, 'text-porcelain']}>Review</span>
+    <span class:list={[tag, 'text-dim']}>Stop <span data-stop>1</span>/5</span>
+  </div>
+  <div class="relative flex-1 px-3 py-5">
+    <ol class="flex flex-col gap-3">
+      {
+        diff.map((size) => (
+          <li data-line class="flex h-4 items-center gap-2 pl-8">
+            <span class:list={['h-3', size > 0 ? 'bg-diff-add' : 'bg-diff-del']} style={`width: ${Math.abs(size) * 85}%`} />
+            <span data-tick class="ml-auto hidden font-pixel text-base text-porcelain">✓</span>
+          </li>
+        ))
+      }
+    </ol>
+    <button
+      type="button"
+      data-reviewer
+      data-secret="reviewer"
+      class="absolute top-5 left-3 size-5 cursor-pointer transition-transform duration-300 [transition-timing-function:steps(3)]"
+      aria-label="The reviewer"
+    >
+      <Pixel {...reviewer} class="size-5" />
+    </button>
+    <span
+      data-stamp
+      class="pointer-events-none absolute inset-0 m-auto hidden h-fit w-fit -rotate-6 border-2 border-porcelain bg-night px-3 py-1 font-pixel text-xl tracking-[0.06em] text-porcelain uppercase"
+    >
+      Approved ✓
+    </span>
+  </div>
+</div>
