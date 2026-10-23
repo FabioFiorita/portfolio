@@ -1,0 +1,401 @@
+---
+import Site from '../layouts/site.astro';
+import Pixel from '../components/pixel.astro';
+import Review from '../components/scenes/review.astro';
+import Lists from '../components/scenes/lists.astro';
+import Dose from '../components/scenes/dose.astro';
+import { reviewer } from '../components/sprites';
+import { figures, links, posts, principles, projects, stack } from '../content';
+
+const title = 'Fábio Fiorita · Full-stack engineer';
+const description =
+  'Full-stack engineer in Brazil. I build products end to end, from the server to the web and the phone, and the apps Porcelain, Tastik and ItsMedTime.';
+
+/* Search engines read who this is from this, not from the layout. Keep it to what the page says. */
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Fábio Fiorita',
+  jobTitle: 'Full-stack engineer',
+  url: Astro.site?.href,
+  sameAs: [links.github, links.linkedin, links.x, links.medium],
+};
+
+const name = ['FÁBIO', 'FIORITA'];
+const socials = [
+  ['X', links.x],
+  ['LinkedIn', links.linkedin],
+  ['GitHub', links.github],
+  ['Medium', links.medium],
+] as const;
+const contacts = [
+  ['Email', `mailto:${links.email}`, links.email],
+  ['LinkedIn', links.linkedin, 'fabiofioritapontes'],
+  ['X', links.x, '@flfiorita'],
+  ['GitHub', links.github, 'FabioFiorita'],
+  ['Medium', links.medium, '@fabiolfp'],
+] as const;
+
+const scenes = { porcelain: Review, tastik: Lists, itsmedtime: Dose } as const;
+const tones = {
+  porcelain: { text: 'text-porcelain', bg: 'bg-porcelain', border: 'border-porcelain' },
+  tastik: { text: 'text-tastik', bg: 'bg-tastik', border: 'border-tastik' },
+  medtime: { text: 'text-medtime', bg: 'bg-medtime', border: 'border-medtime' },
+} as const;
+
+const inventory = [
+  { item: 'Porcelain', stat: 'Open source', tone: 'text-porcelain' },
+  { item: 'Tastik', stat: 'App Store, 2023', tone: 'text-tastik' },
+  { item: 'ItsMedTime', stat: `${figures.itsMedTimeRating.value}★ in Brazil`, tone: 'text-medtime' },
+  { item: 'App Store', stat: `${figures.appDownloads.label} downloads`, tone: 'text-alarm' },
+  { item: 'Writing', stat: `${posts.length} posts on Medium`, tone: 'text-text' },
+  { item: 'Shipping since', stat: '2021', tone: 'text-text' },
+] as const;
+
+/* The hero's track: one block per step, lit in the colour of the product being shipped. */
+const track = 24;
+
+/* What the terminal can answer, embedded so the script needs no second copy of the content. */
+const facts = {
+  links: { email: `mailto:${links.email}`, linkedin: links.linkedin, x: links.x, github: links.github, medium: links.medium },
+  projects: projects.map((project) => ({ name: project.name, kind: project.kind, links: project.links })),
+  principles: principles.map((principle) => principle.title),
+  posts: posts.map((post) => ({ title: post.title, href: post.href })),
+};
+
+const frame = 'relative border-2 border-grid bg-panel shadow-[6px_6px_0_0_var(--grid)]';
+const tag = 'font-pixel text-base tracking-[0.06em] uppercase';
+const heading = 'font-display text-xl leading-snug uppercase sm:text-2xl';
+const pad = (index: number) => String(index + 1).padStart(2, '0');
+const date = (iso: string) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+---
+
+<Site title={title} description={description}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(person)} />
+  <main id="top" class="mx-auto w-full max-w-[60rem] overflow-x-clip px-5">
+    <!-- Hero -->
+    <section class="pt-16 sm:pt-24">
+      <h1 class="font-display text-[clamp(2.3rem,9.6vw,6rem)] leading-[1.15]" aria-label="Fábio Fiorita">
+        {
+          name.map((word) => (
+            <span class="block whitespace-nowrap" aria-hidden="true">
+              {[...word].map((letter) => (
+                <span data-letter class="inline-block">
+                  {letter}
+                </span>
+              ))}
+            </span>
+          ))
+        }
+      </h1>
+
+      <p data-reveal class="mt-8 max-w-[44rem] font-pixel text-2xl leading-snug tracking-[0.04em] uppercase sm:text-3xl">
+        Full-stack engineer. Builder of{' '}
+        <a class="text-porcelain underline decoration-2 underline-offset-4" href="#porcelain">Porcelain</a>,{' '}
+        <a class="text-tastik underline decoration-2 underline-offset-4" href="#tastik">Tastik</a> and{' '}
+        <a class="text-medtime underline decoration-2 underline-offset-4" href="#itsmedtime">ItsMedTime</a>.
+      </p>
+      <p data-reveal class="mt-4 max-w-[40rem] text-dim">
+        I build products end to end, from the server to the web and the phone, and I don’t call anything done until I have
+        seen it work.
+      </p>
+
+      <div data-reveal class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+        <a
+          href="#projects"
+          class="inline-flex items-center gap-2 border-2 border-text bg-text px-4 py-2 font-pixel text-lg tracking-[0.06em] text-night uppercase no-underline shadow-[4px_4px_0_0_var(--porcelain)] transition-transform active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0_0_var(--porcelain)]"
+        >
+          See my work ↓
+        </a>
+        {
+          socials.map(([label, href]) => (
+            <a class="font-pixel text-lg tracking-[0.06em] text-dim uppercase no-underline hover:text-text" href={href}>
+              {label}
+            </a>
+          ))
+        }
+      </div>
+
+      <!-- The track -->
+      <div data-reveal data-track class="relative mt-16 sm:mt-20" aria-hidden="true">
+        <p class:list={[tag, 'text-dim']}>
+          Now shipping ▸ <span data-shipping class="text-porcelain">Porcelain</span>
+        </p>
+        <div class="relative mt-8 grid gap-1" style={`grid-template-columns: repeat(${track}, minmax(0, 1fr))`}>
+          {Array.from({ length: track }, () => <span data-block class="h-3 bg-grid" />)}
+          <span data-runner class="absolute -top-6 left-0 size-5">
+            <Pixel {...reviewer} class="size-5" />
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="scroll-mt-20 pt-28 sm:pt-36">
+      <h2 data-reveal class={heading}>Projects</h2>
+      <p data-reveal class="mt-3 text-dim">
+        Three products I designed, built and shipped on my own. The two on the App Store have {figures.appDownloads.label}{' '}
+        downloads.
+      </p>
+      <div class="mt-10 flex flex-col gap-8">
+        {
+          projects.map((project, index) => {
+            const Scene = scenes[project.id];
+            const tone = tones[project.tone];
+            return (
+              <article id={project.id} data-reveal class:list={[frame, 'grid scroll-mt-24 grid-cols-1 md:grid-cols-[19rem_1fr]']}>
+                <div class="border-b-2 border-grid bg-night/50 md:border-r-2 md:border-b-0">
+                  <Scene />
+                </div>
+                <div class="flex flex-col p-6">
+                  <p class:list={[tag, 'text-dim']}>
+                    {pad(index)} · {project.kind}
+                  </p>
+                  <h3 class:list={['mt-3 font-display text-xl leading-snug uppercase sm:text-2xl', tone.text]}>{project.name}</h3>
+                  <p class="mt-4 leading-relaxed">{project.summary}</p>
+                  <p class="mt-3 text-sm leading-relaxed text-dim">{project.detail}</p>
+                  <div class="mt-5 flex flex-wrap gap-2">
+                    {project.platforms.map((platform) => (
+                      <span class:list={['border-2 px-2 py-0.5 font-pixel text-base tracking-[0.06em] uppercase', tone.border, tone.text]}>{platform}</span>
+                    ))}
+                    {project.stack.map((item) => (
+                      <span class="border-2 border-grid px-2 py-0.5 font-pixel text-base tracking-[0.06em] text-dim uppercase">{item}</span>
+                    ))}
+                  </div>
+                  <div class="mt-6 flex flex-wrap gap-4 pt-1 md:mt-auto">
+                    {project.links.map((link, linkIndex) => (
+                      <a
+                        href={link.href}
+                        class:list={[
+                          'inline-flex items-center gap-1.5 border-2 px-3 py-1.5 font-pixel text-lg tracking-[0.06em] uppercase no-underline transition-transform active:translate-y-[2px]',
+                          linkIndex === 0 ? [tone.bg, tone.border, 'text-night'] : 'border-grid text-text hover:border-dim',
+                        ]}
+                      >
+                        {link.label} ↗
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <!-- Player card -->
+    <section id="about" class="scroll-mt-20 pt-28 sm:pt-36">
+      <h2 data-reveal class={heading}>Player one</h2>
+      <div data-reveal class:list={[frame, 'mt-8']}>
+        <div class="p-6">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <p class:list={[tag, 'text-dim']}>Class: full-stack engineer</p>
+            <p class:list={[tag, 'text-alarm']}>São José dos Campos · BR</p>
+          </div>
+          <p class="mt-3 font-display text-lg leading-snug uppercase sm:text-xl">Fábio Fiorita</p>
+          <p class:list={[tag, 'mt-6 text-dim']}>Inventory</p>
+          <dl class="mt-2 grid grid-cols-1 gap-x-8 gap-y-1.5 sm:grid-cols-2">
+            {
+              inventory.map((entry) => (
+                <div class="flex items-baseline justify-between gap-3 border-b border-dashed border-grid py-1 font-pixel text-lg tracking-[0.08em] uppercase">
+                  <dt>{entry.item}</dt>
+                  <dd class={entry.tone}>{entry.stat}</dd>
+                </div>
+              ))
+            }
+          </dl>
+          <p class:list={[tag, 'mt-6 text-dim']}>Skills</p>
+          <ul class="mt-2 flex flex-wrap gap-2">
+            {stack.map((item) => <li class="border-2 border-grid px-2 py-0.5 font-pixel text-base tracking-[0.06em] uppercase">{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- How I work -->
+    <section id="principles" class="scroll-mt-20 pt-28 sm:pt-36">
+      <h2 data-reveal class={heading}>How I work</h2>
+      <p data-reveal class="mt-3 max-w-[40rem] text-dim">
+        Seven rules I hold every change to, and where each one has shaped real work. Open a level to see it in practice.
+      </p>
+      <ol class="mt-10 flex flex-col gap-3">
+        {
+          principles.map((principle, index) => (
+            <li data-reveal>
+              <details class:list={['group', frame]} open={index === 0}>
+                <summary class="flex cursor-pointer list-none items-center gap-4 px-5 py-4 [&::-webkit-details-marker]:hidden">
+                  <span class="shrink-0 font-pixel text-base tracking-[0.06em] text-porcelain">LVL {pad(index)}</span>
+                  <span class="flex-1 font-pixel text-2xl tracking-[0.06em] uppercase sm:text-2xl">{principle.title}</span>
+                  <span class="font-pixel text-2xl text-dim transition-transform group-open:rotate-90" aria-hidden="true">▸</span>
+                </summary>
+                <div class="border-t-2 border-grid px-5 pt-4 pb-5">
+                  <p class="text-dim">{principle.line}</p>
+                  <p class:list={[tag, 'mt-5 text-porcelain']}>In practice</p>
+                  <ul class="mt-2 flex flex-col gap-2">
+                    {principle.examples.map((example) => (
+                      <li class="flex gap-3 border-2 border-grid bg-night/50 p-4 text-sm leading-relaxed">
+                        <span class="font-pixel text-lg leading-none text-porcelain" aria-hidden="true">▸</span>
+                        <span>{example.body}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </details>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <!-- Log -->
+    <section id="log" class="scroll-mt-20 pt-28 sm:pt-36">
+      <h2 data-reveal class={heading}>Log</h2>
+      <ul class="mt-8 flex flex-col gap-3">
+        {
+          posts.map((post) => (
+            <li data-reveal>
+              <a
+                href={post.href}
+                class:list={[frame, 'group flex flex-col gap-2 p-5 no-underline transition-transform hover:-translate-y-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6']}
+              >
+                <span class="font-pixel text-xl leading-snug tracking-[0.04em] text-text uppercase group-hover:text-porcelain">{post.title}</span>
+                <span class:list={[tag, 'shrink-0 text-dim']}>
+                  {date(post.date)} · {post.minutes} min
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a data-reveal href={links.medium} class="mt-5 inline-block font-pixel text-lg tracking-[0.06em] text-dim uppercase hover:text-text">
+        All posts on Medium ↗
+      </a>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="scroll-mt-20 pt-28 pb-28 sm:pt-36">
+      <h2 data-reveal class={heading}>Contact</h2>
+      <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2">
+        <ul data-reveal class="flex flex-col">
+          {
+            contacts.map(([label, href, handle]) => (
+              <li class="border-b-2 border-grid">
+                <a href={href} class="group flex items-baseline justify-between gap-4 py-3 no-underline">
+                  <span class="font-pixel text-2xl tracking-[0.08em] text-text uppercase group-hover:text-porcelain">{label}</span>
+                  <span class:list={[tag, 'truncate text-dim']}>{handle} ↗</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div data-reveal data-terminal class:list={[frame, 'flex min-h-[19rem] flex-col']}>
+          <script type="application/json" set:html={JSON.stringify(facts)} />
+          <div class="flex items-center gap-2 border-b-2 border-grid px-3 py-2">
+            <span class="size-2.5 bg-diff-del"></span>
+            <span class="size-2.5 bg-alarm"></span>
+            <span class="size-2.5 bg-tastik"></span>
+            <span class:list={[tag, 'ml-2 text-dim']}>guest@fabiofiorita.com</span>
+          </div>
+          <div data-output class="max-h-64 flex-1 overflow-y-auto px-4 pt-3 text-sm leading-relaxed" aria-live="polite">
+            <p>Hi. This is my terminal.</p>
+            <p class="text-dim">Type a command and press enter, or try the buttons below.</p>
+          </div>
+          <form class="flex items-center gap-2 px-4 py-3 text-sm">
+            <label for="terminal-input" class="shrink-0 text-tastik">guest ~ $</label>
+            <input
+              id="terminal-input"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="help"
+              class="min-w-0 flex-1 bg-transparent text-text caret-porcelain outline-none placeholder:text-dim/60"
+            />
+          </form>
+          <div class="flex flex-wrap gap-2 border-t-2 border-grid px-3 py-2.5">
+            {
+              ['help', 'projects', 'rules', 'contact'].map((command) => (
+                <button type="button" data-run={command} class="border-2 border-grid px-2 py-0.5 font-pixel text-base tracking-[0.06em] text-dim uppercase hover:border-dim hover:text-text">
+                  {command}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Site>
+
+<script>
+  import { animate, inView, stagger } from 'motion';
+  import { all, pixelEase, wait, whileVisible } from '../scripts/loop';
+  import { playScenes } from '../scripts/scenes';
+  import { confetti } from '../scripts/confetti';
+  import { onSecret, secretNames, watchSecrets } from '../scripts/secrets';
+  import { startTerminal } from '../scripts/terminal';
+
+  const root = document.documentElement;
+  /* The layout drops the motion class when the visitor prefers less motion, or when this script arrived too late. */
+  const moving = root.classList.contains('motion');
+  root.toggleAttribute('data-animated', true);
+
+  watchSecrets();
+  const terminal = document.querySelector<HTMLElement>('[data-terminal]');
+  if (terminal) startTerminal(terminal);
+  const counter = document.querySelector<HTMLElement>('[data-secrets]');
+  /* Once every secret is found, the counter itself throws the confetti again. */
+  counter?.addEventListener('click', confetti);
+  onSecret((count, latest) => {
+    if (counter) {
+      counter.toggleAttribute('disabled', count < secretNames.length);
+      counter.title = count < secretNames.length ? '' : 'Celebrate again';
+      counter.textContent = count === secretNames.length ? `Secrets ${count}/${count} ★` : `Secrets ${count}/${secretNames.length}`;
+      if (latest) animate(counter, { scale: [1.4, 1] }, { duration: 0.3, ease: pixelEase });
+    }
+    if (latest && count === secretNames.length) confetti();
+  });
+
+  if (moving) {
+    animate(all(document, '[data-letter]'), { opacity: [0, 1], y: [-24, 0] }, { duration: 0.35, ease: pixelEase, delay: stagger(0.05, { startDelay: 0.15 }) });
+    for (const element of all(document, '[data-reveal]')) {
+      inView(
+        element,
+        () => {
+          animate(element, { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, ease: pixelEase, delay: 0.1 });
+        },
+        { amount: 0.15 },
+      );
+    }
+    playScenes();
+
+    /* The runner crosses the track, lighting blocks in the colour of each product in turn. */
+    const track = document.querySelector<HTMLElement>('[data-track]');
+    if (track) {
+      const blocks = all(track, '[data-block]');
+      const runner = track.querySelector<HTMLElement>('[data-runner]')!;
+      const label = track.querySelector<HTMLElement>('[data-shipping]')!;
+      const shipping = [
+        ['Porcelain', 'bg-porcelain', 'text-porcelain'],
+        ['Tastik', 'bg-tastik', 'text-tastik'],
+        ['ItsMedTime', 'bg-medtime', 'text-medtime'],
+      ] as const;
+      whileVisible(track, async (live) => {
+        let round = 0;
+        while (live()) {
+          const [name, fill, text] = shipping[round % shipping.length]!;
+          label.textContent = name;
+          label.className = text;
+          for (const block of blocks) {
+            if (!live()) return;
+            runner.style.transform = `translateX(${block.offsetLeft}px)`;
+            block.className = `h-3 ${fill}`;
+            await wait(110);
+          }
+          await wait(900);
+          for (const block of blocks) block.className = 'h-3 bg-grid';
+          round++;
+        }
+      });
+    }
+  }
+</script>
