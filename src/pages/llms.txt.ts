@@ -3,7 +3,7 @@ import { figures, links, posts, principles, projects, stack } from '../content';
 
 /* The page's facts as plain text for language models (llmstxt.org). It reads the same content as the page. */
 export const GET: APIRoute = ({ site }) => {
-  const home = site?.href ?? 'https://fabiofiorita.com/';
+  const home = site?.href ?? 'https://portfolio.fabiofiorita.com/';
   const text = [
     '# Fábio Fiorita',
     '',

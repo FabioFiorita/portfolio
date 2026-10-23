@@ -1,6 +1,6 @@
-# fabiofiorita.com
+# portfolio.fabiofiorita.com
 
-My portfolio, as a small pixel game: the three products I build (Porcelain, Tastik and ItsMedTime) play out as looping scenes, a player card holds the inventory, and there is a terminal at the bottom that answers back.
+[My portfolio](https://portfolio.fabiofiorita.com), as a small pixel game: the three products I build (Porcelain, Tastik and ItsMedTime) play out as looping scenes, a player card holds the inventory, and there is a terminal at the bottom that answers back.
 
 ![Fábio Fiorita: builder of Porcelain, Tastik and ItsMedTime](public/og.png)
 
@@ -51,7 +51,7 @@ src/
 
 ## One source of truth
 
-The page, the terminal and [`/llms.txt`](https://fabiofiorita.com/llms.txt) all read from `src/content.ts`, so they can't disagree. Every number in there comes with where it came from and when.
+The page, the terminal and [`/llms.txt`](https://portfolio.fabiofiorita.com/llms.txt) all read from `src/content.ts`, so they can't disagree. Every number in there comes with where it came from and when.
 
 ## Accessibility
 
@@ -60,3 +60,7 @@ With reduced motion turned on, nothing animates and nothing is hidden waiting fo
 ## Elsewhere
 
 [LinkedIn](https://www.linkedin.com/in/fabiofioritapontes/) · [X](https://x.com/flfiorita) · [GitHub](https://github.com/FabioFiorita) · [Medium](https://medium.com/@fabiolfp)
+
+## License
+
+[MIT](LICENSE). Take the pixel scenes, the terminal or the confetti for your own site. The secrets you have to find yourself.
