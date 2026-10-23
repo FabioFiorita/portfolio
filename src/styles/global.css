@@ -1,0 +1,69 @@
+@import 'tailwindcss';
+@import '@fontsource/press-start-2p/400.css';
+@import '@fontsource/jersey-10/400.css';
+@import '@fontsource-variable/jetbrains-mono';
+
+@theme {
+  --font-display: 'Press Start 2P', ui-monospace, monospace;
+  --font-pixel: 'Jersey 10', ui-monospace, monospace;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+}
+
+@theme inline {
+  --color-night: var(--night);
+  --color-panel: var(--panel);
+  --color-grid: var(--grid);
+  --color-text: var(--text);
+  --color-dim: var(--dim);
+  --color-porcelain: var(--porcelain);
+  --color-tastik: var(--tastik);
+  --color-medtime: var(--medtime);
+  --color-alarm: var(--alarm);
+  --color-diff-add: var(--diff-add);
+  --color-diff-del: var(--diff-del);
+}
+
+/* Night ink, and one colour per product: Porcelain blue, Tastik green, ItsMedTime violet. Alarm is for what rings. */
+@layer theme {
+  :root {
+    --night: #0b0d14;
+    --panel: #12162a;
+    --grid: #252b45;
+    --text: #e8ecf8;
+    --dim: #8c95b3;
+    --porcelain: #86a8ff;
+    --tastik: #5fd38a;
+    --medtime: #a790ff;
+    --alarm: #ffc861;
+    --diff-add: #2f7a52;
+    --diff-del: #8a3b4f;
+  }
+}
+
+::selection {
+  background: var(--porcelain);
+  color: var(--night);
+}
+
+/* Pixel art stays crisp at every size. */
+svg[data-pixel] {
+  shape-rendering: crispEdges;
+}
+
+/*
+  Motion owns the entrances. The html element gets the motion class before
+  paint when the visitor allows motion, so what will animate in starts hidden.
+*/
+.motion :is([data-reveal], [data-letter]) {
+  opacity: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
